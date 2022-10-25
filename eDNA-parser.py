@@ -24,25 +24,23 @@ colsToBeManipulated = [
     'Average of % of identical matches',
     'Average reference alignment length'
 ]
-# make list of each column
+# make list of each column, this lists can be used to sample and generate randomised data
 numOfSeqList = df[colsToBeManipulated[0]].tolist()
 avgPercOfIdenticalMatches = df[colsToBeManipulated[1]].tolist()
 avgRefAlignmentLength = df[colsToBeManipulated[2]].tolist()
-# in each zone are only the species present that were not sampled twice or more from U[0,n-1] n=numOfSpeciesOriginalSample
-matrixWithDuplicates = np.random.uniform(low=0, high=numMaxSpecies-1, size=(numOfZones, numMaxSpecies)).round()
-print(matrixWithDuplicates)
-# df.drop([0, 1])
-# for each zone (ie. df) get sampled species
-# i = 1
-# dfForEachZone = [df.drop(matrixWithDuplicates[i], inplace=False) for i, df in enumerate(dfForEachZone)]
-# dfForEachZone = [df.removeDuplicated(axis=0) for df in dfForEachZone]
 
+# in each zone are only the species present that were not sampled twice or more from U[0,n-1] n=numOfSpeciesOriginalSample
+# high sizeForSampling results in large pseudo samples, low sizeForSampling results in small pseudo samples
+sizeForSampling = round(np.random.uniform(low=0, high=numMaxSpecies))
+matrixWithDuplicates = np.random.uniform(low=0, high=numMaxSpecies-1, size=(numOfZones, sizeForSampling)).round()
+
+# matrixWithDuplicates.shape >> (407, 255)
+
+# drop duplicates, non-duplicates emulate sampled species
 dfPseudoSampledSpecies = df.drop(matrixWithDuplicates[0], inplace=False).drop_duplicates()
-print(dfPseudoSampledSpecies)
-numSpeciesForZoneA = len(dfPseudoSampledSpecies.index)
+
 # draw from existing values e.g numOfSeqList, dimensions numSpeciesForZoneA x 1
 # replace the column of 'Number of Sequences'
-
 
 numOfSequences = np.random.choice(numOfSeqList,size=numMaxSpecies)
 dfPseudoSampledSpecies[colsToBeManipulated[0]] = pd.Series(numOfSequences)
@@ -53,9 +51,13 @@ dfPseudoSampledSpecies[colsToBeManipulated[1]] = pd.Series(avgPercOfIdenticalMat
 avgRefAlignmentLengthSampled = np.random.choice(avgRefAlignmentLength,size=numMaxSpecies)
 dfPseudoSampledSpecies[colsToBeManipulated[2]] = pd.Series(avgRefAlignmentLengthSampled)
 
+print(dfPseudoSampledSpecies[colsToBeManipulated[2]])
 # do this for all dfs
 # make each df a json, and put all jsons into a big json
 
 # make for each df (ie. each zone) a json
 df['json'] = df.apply(lambda x: x.to_json(), axis=1)
-# print(df['json'].tolist()[0])
+
+# this should be created for each df, put all the lists into a new json
+df['json'].tolist()
+
