@@ -3,14 +3,22 @@ import pandas as pd
 import numpy as np
 import json
 
-pathCounties = "monthly_state.json"
 path_eDNA = "41467_2016_BFncomms12544_MOESM1319_ESM.xlsx"
 
-# json
-with open(pathCounties, 'r') as countries_file:
-    zones_data = json.load(countries_file)
+zones = ["MKE-MKE01","MKE-MKE02","MKE-MKE03","MKE-MKE04","MKE-MKE05","MKE-MKE06",
+        "MKE-MKE07","MKE-MKE08","MKE-MKE09","MKE-MKE10","MKE-MKE11","MKE-MKE12",
+        "MKE-MKE13","MKE-MKE14","MKE-MKE15","MKE-MKE16","MKE-MKE17","MKE-MKE18",
+        "MKE-MKE19","MKE-MKE20","MKE-MKE21","MKE-MKE22","MKE-MKE23","MKE-MKE24",
+        "MKE-MKE25","MKE-MKE26","MKE-MKE27","MKE-MKE28","MKE-MKE29","MKE-MKE30",
+        "MKE-MKE31","MKE-MKE32","MKE-MKE33","MKE-MKE34","MKE-MKE35","MKE-MKE36",
+        "MKE-MKE37","MKE-MKE38","MKE-MKE39","MKE-MKE40","MKE-MKE41","MKE-MKE42",
+        "MKE-MKE43","MKE-MKE44","MKE-MKE45","MKE-MKE46","MKE-MKE47","MKE-MKE48",
+        "MKE-MKE49","MKE-MKE50","MKE-MKE51","MKE-MKE52","MKE-MKE53","MKE-MKE54",
+        "MKE-MKE55","MKE-MKE56","MKE-MKE57","MKE-MKE58","MKE-MKE59","MKE-MKE60",
+        "MKE-MKE61","MKE-MKE62","MKE-MKE63","MKE-MKE64","MKE-MKE65","MKE-MKE66",
+        "MKE-MKE67","MKE-MKE68","MKE-MKE69","MKE-MKE70","MKE-MKE71","MKE-MKE72",
+        "MKE-MKE73","MKE-MKE74","MKE-MKE75","MKE-MKE76","MKE-MKE77","MKE-MKE78"]
 
-zones = zones_data['data']['countries'].keys()
 numOfZones = len(zones)
 
 # pandas
@@ -158,13 +166,7 @@ stateToBecomeJson["data"]["createdAt"] = "2022-08-24T09:00:00Z"
 stateToBecomeJson["data"]["datetime"] = "2022-08-24T09:00:00Z"
 stateToBecomeJson["data"]["stateAggregation"] = "monthly" 
 
-os.mkdir("state")
-path = "state/monthly.json"
+# os.mkdir("state")
+path = "state/monthly_massai_mara.json"
 with open(path, 'x') as stateFile:
     json.dump(stateToBecomeJson, stateFile, indent=4)
-
-# create a folder and a json file for each zone
-# public/v5/history/zoneId/monthly.json
-
-# perhaps work inside electricity maps repo
-# create pyenv inside history folder for data generation
